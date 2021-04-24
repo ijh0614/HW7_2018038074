@@ -16,27 +16,31 @@
 /* 필요한 헤더파일 추가 if necessary */
 
 
-typedef struct Node {
-	int key;
-	struct Node* llink;
-	struct Node* rlink;
+typedef struct Node {//노드 구조
+	int key;//저장 값
+	struct Node* llink;//struct를 붙혀서 지연시켜준다.
+	struct Node* rlink;//링크가 두개 임. llink는 앞, rlink는 뒤의 노드 주소를 저장함.
 } listNode;
 
 
 
-typedef struct Head {
-	struct Node* first;
+typedef struct Head {//헤드노드. 시작 주소를 저장한다. 데이터가 비어있는지 구분해 줄 때 사용
+	struct Node* first;//Node의 포인터형 변수 중 맨 처음 노드의 주소를 저장
 }headNode;
 
-/* 함수 리스트 */
 
+/* 함수 리스트 */
 /* note: initialize는 이중포인터를 매개변수로 받음
          singly-linked-list의 initialize와 차이점을 이해 할것 */
+
+/*반환값이 int, 매개변수가 이중포인터라는 점에서 singly-linked-list와 다르다.
+이중 포인터를 써서 포인터 변수가 가르키는 값을 변경. 즉 initialize함수 자체에서 초기화*/
 int initialize(headNode** h);
 
 /* note: freeList는 싱글포인터를 매개변수로 받음
         - initialize와 왜 다른지 이해 할것
         - 이중포인터를 매개변수로 받아도 해제할 수 있을 것 */
+/*initialize함수에서 호출할때는 매개변수로 이중포인터가 오고 */
 int freeList(headNode* h);
 
 int insertNode(headNode* h, int key);
@@ -57,7 +61,7 @@ int main()
 	headNode* headnode=NULL;
 
 	do{
-		printf("----------------------------------------------------------------\n");
+		printf("-------[2018038074]-----------------------[임종훈]--------------\n");
 		printf("                     Doubly Linked  List                        \n");
 		printf("----------------------------------------------------------------\n");
 		printf(" Initialize    = z           Print         = p \n");
@@ -72,6 +76,7 @@ int main()
 
 		switch(command) {
 		case 'z': case 'Z':
+		//headnode의 주소를 받음. 따라서 이중포인터로 받아줘야 함.
 			initialize(&headnode);
 			break;
 		case 'p': case 'P':
@@ -120,7 +125,13 @@ int main()
 }
 
 
-int initialize(headNode** h) {
+int initialize(headNode** h) {//headnode의 주소를 받음
+
+	/* headNode가 NULL이 아니면, freeNode를 호출하여 할당된 메모리 모두 해제 */
+	//headNode가 NULL이라는 것은 만들어진 연결리스트가 없다는 것이고, NULL이 아니면 아직 연결리스트가 남았는데 초기화해주는 것.
+	if(*h != NULL)
+		freeList(h);
+	
 
 	return 1;
 }
