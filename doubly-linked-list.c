@@ -135,7 +135,7 @@ int initialize(headNode** h) {//headnode의 주소를 받음
 	}
 
 	//값을 저장하는 노드를 선언하는게 아니라, 첫번째 노드의 주소를 저장하는 헤드노드 선언
-	headNode** h = (headNode*)malloc(sizeof(headNode));
+	(*h) = (headNode*)malloc(sizeof(headNode));
 	(*h)->first = NULL;//아직 주소 없음
 
 	return 1;
@@ -198,11 +198,11 @@ int insertLast(headNode* h, int key) {
 	node->key = key;
 	node->rlink = NULL;
 
-	while(temp != NULL){//끝으로 이동
-		node->llink = temp;//
+	while(temp->rlink != NULL){//끝으로 이동
 		temp = temp->rlink;//다음 노드의 주소 임시저장
 	}
-	temp = node;//temp는 rlink인 상태
+	node->llink = temp;
+	temp->rlink = node;//temp는 rlink인 상태
 	return 0;
 }
 
@@ -212,7 +212,27 @@ int insertLast(headNode* h, int key) {
  * list의 마지막 노드 삭제
  */
 int deleteLast(headNode* h) {
+	listNode *del_node = h->first;
+	listNode *temp;
+	
+	if(h->first == NULL){//노드 삭제 전처리
+		printf("There is no node to delete.\n\n");//삭제할 노드가 없습니다.
+		return 0;
+	}
 
+	while(del_node->rlink != NULL){//끝으로 이동
+		del_node = del_node->rlink;//다음 노드의 주소 임시저장
+	}
+
+	//노드가 하나일때
+	if(del_node == h->first){
+		deleteFirst(h);
+		return 0;
+	}
+	
+	temp = del_node->llink;//마지막의 이전 노드를 저장
+	temp->rlink = NULL;//del_node를 가르키던 링크에 NULL저장
+	free(del_node);//삭제
 
 	return 0;
 }
@@ -224,13 +244,26 @@ int deleteLast(headNode* h) {
  */
 /*1. 노드 동적할당 2.노드에 키 저장 3. 헤드노드가 이전에 가르키던 노드 rlink에 저장
 4.헤드노드를 llink에 저장 5.헤드노드가 가르키도록 함*/
+//노드가 하나도 없을때, 원래 노드가 있을 때 구분
 int insertFirst(headNode* h, int key) {
 
 	listNode* node = (listNode*)malloc(sizeof(listNode));
+	listNode* will_sec_node;
+
 	node->key = key;//값 저장
-	node->rlink = h->first;
-	node->llink = h;//link 저장
+	will_sec_node = h->first;//첫번째 노드
+
+	if(will_sec_node == NULL){//아무 노드도 저장되어있지 않을 때
+		node->llink = h->first;//헤드 노드의 주소 
+		h->first = node;
+		node->rlink = NULL;//처음이면 끝 링크에 NULL값 저장.
+		return 0;
+	}
+	//원래 노드가 있었을 때
+	node->rlink = will_sec_node;//두번째 노드의 주소
+	node->llink = h->first;//link 저장
 	h->first = node;
+	will_sec_node->llink = node;
 	return 0;
 }
 
@@ -238,7 +271,26 @@ int insertFirst(headNode* h, int key) {
  * list의 첫번째 노드 삭제
  */
 int deleteFirst(headNode* h) {
-	
+	listNode *del_node;//지울 노드
+	listNode *second_node;//지울 노드의 다음 노드
+
+	if(h->first == NULL){//노드 삭제 전처리
+		printf("There is no node to delete.\n\n");
+		return 0;
+	}
+	del_node = h->first;
+	second_node = del_node->rlink;
+
+	if(second_node == NULL){//노드가 하나일 때
+		h->first = NULL;
+		free(del_node);
+		return 0;
+	}
+	//노드 두개 이상일 때
+	h->first = second_node;
+	second_node->llink = h->first;//헤드 노드와 연결
+	free(del_node);
+
 	return 0;
 }
 
@@ -265,6 +317,10 @@ int insertNode(headNode* h, int key) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(headNode* h, int key) {
+	if(h->first == NULL){//노드 삭제 전처리
+		printf("There is no node to delete.\n\n");
+		return 0;
+	}
 
 	return 1;
 }
