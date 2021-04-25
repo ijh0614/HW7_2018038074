@@ -229,7 +229,7 @@ int deleteLast(headNode* h) {
 		deleteFirst(h);
 		return 0;
 	}
-	
+
 	temp = del_node->llink;//마지막의 이전 노드를 저장
 	temp->rlink = NULL;//del_node를 가르키던 링크에 NULL저장
 	free(del_node);//삭제
@@ -261,7 +261,7 @@ int insertFirst(headNode* h, int key) {
 	}
 	//원래 노드가 있었을 때
 	node->rlink = will_sec_node;//두번째 노드의 주소
-	node->llink = h->first;//link 저장
+	node->llink = NULL;//헤드노드 가르킬 필요 없음
 	h->first = node;
 	will_sec_node->llink = node;
 	return 0;
@@ -308,6 +308,40 @@ int invertList(headNode* h) {
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
 int insertNode(headNode* h, int key) {
+	if(h->first == NULL){//하나도 저장되어있지 않으면 그냥 저장
+		insertFirst(h, key);
+		return 0;
+	}
+	
+	listNode* node = (listNode*)malloc(sizeof(listNode));//노드 생성
+	listNode* temp = h->first;
+	listNode* last_node;
+
+	node->key = key;//값 저장
+
+	while(temp != NULL){//노드가 헤드노드랑 첫번째 노드 사이에 온다면?
+		if(temp->key >= key){//탐색중인 노드의 값이 입력 값보다 크면
+			if(temp == h->first){//첫번째에 삽입해야 하는 경우
+				node->llink = NULL;//헤드 노드는 가르킬 필요가 없음
+				node->rlink = temp;
+				h->first = node;
+				temp->llink = node;//양쪽에서 삽입한 노드 가르키도록 설정
+				return 0;
+			}
+			//이 외에 삽입할때
+			node->llink = temp->llink;
+			node->rlink = temp;//노드의 오른쪽 링크는 큰 값을 검사한 노드
+			temp->llink->rlink = node;//이전 노드의 오른쪽 링크를 노드로 바꾸고
+			temp->llink = node;
+			return 0;
+		}
+		last_node = temp;//마지막 노드 저장
+		temp = temp->rlink;//다음 노드로 이동
+	}
+	//끝까지 왔으면
+	node->rlink = NULL;
+	node->llink = last_node;
+	last_node->rlink = node;
 
 	return 0;
 }
