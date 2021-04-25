@@ -2,14 +2,14 @@
 Doubly Linked List
 
 ## To build
-- [] int initialize(headNode** h);
-- [] int freeList(headNode* h);
-- [] int insertNode(headNode* h, int key);
-- [] int insertLast(headNode* h, int key);
+- [O] int initialize(headNode** h);
+- [O] int freeList(headNode* h);
 - [] int insertFirst(headNode* h, int key);
-- [] int deleteNode(headNode* h, int key);
-- [] int deleteLast(headNode* h);
+- [] int insertLast(headNode* h, int key);
 - [] int deleteFirst(headNode* h);
+- [] int deleteLast(headNode* h);
+- [] int insertNode(headNode* h, int key);
+- [] int deleteNode(headNode* h, int key);
 - [] int invertList(headNode* h);
 
 

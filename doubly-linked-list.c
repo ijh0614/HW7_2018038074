@@ -121,6 +121,7 @@ int main()
 
 	}while(command != 'q' && command != 'Q');
 
+	freeList(headnode);//프로그램 종료시 동적할당 해제
 	return 1;
 }
 
@@ -129,14 +130,27 @@ int initialize(headNode** h) {//headnode의 주소를 받음
 
 	/* headNode가 NULL이 아니면, freeNode를 호출하여 할당된 메모리 모두 해제 */
 	//headNode가 NULL이라는 것은 만들어진 연결리스트가 없다는 것이고, NULL이 아니면 아직 연결리스트가 남았는데 초기화해주는 것.
-	if(*h != NULL)
-		freeList(h);
-	
+	if(*h != NULL){
+		freeList(*h);//여기서는 이중포인터이므로 한번 역참조 해줘야 함.
+	}
+
+	//값을 저장하는 노드를 선언하는게 아니라, 첫번째 노드의 주소를 저장하는 헤드노드 선언
+	headNode** h = (headNode*)malloc(sizeof(headNode));
+	(*h)->first = NULL;//아직 주소 없음
 
 	return 1;
 }
 
-int freeList(headNode* h){
+int freeList(headNode* h){//headnode의 주소
+	listNode* p = h->first;//첫번째 노드의 주소
+	listNode* temp = NULL;//다음 노드 임시저장
+
+	while(temp != NULL){
+		temp = p->rlink;//다음 노드의 주소 임시저장
+		free(p);
+	}
+	//마지막에 헤드노드 해제
+	free(h);
 	return 0;
 }
 
