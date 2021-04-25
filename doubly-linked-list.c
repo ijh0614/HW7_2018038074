@@ -183,8 +183,26 @@ void printList(headNode* h) {
 /**
  * list에 key에 대한 노드하나를 추가
  */
+/*1. 노드 동적할당 2.노드에 키 저장 3.마지막 노드까지 이동
+4. 마지막 노드 rlink에 새로운 노드 주소 추가 5. 새로운 노드 llink에 
+마지막 노드 주소 추가 6.새로운 노드 rlink에 NULL추가*/
 int insertLast(headNode* h, int key) {
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	listNode* temp = h->first;//다음 노드 임시저장할 노드 선언
 
+	if(temp == NULL){//전처리. 저장되어있는 노드가 없을 경우
+		insertFirst(h, key);
+		return 0;
+	}
+
+	node->key = key;
+	node->rlink = NULL;
+
+	while(temp != NULL){//끝으로 이동
+		node->llink = temp;//
+		temp = temp->rlink;//다음 노드의 주소 임시저장
+	}
+	temp = node;//temp는 rlink인 상태
 	return 0;
 }
 
@@ -204,7 +222,15 @@ int deleteLast(headNode* h) {
 /**
  * list 처음에 key에 대한 노드하나를 추가
  */
+/*1. 노드 동적할당 2.노드에 키 저장 3. 헤드노드가 이전에 가르키던 노드 rlink에 저장
+4.헤드노드를 llink에 저장 5.헤드노드가 가르키도록 함*/
 int insertFirst(headNode* h, int key) {
+
+	listNode* node = (listNode*)malloc(sizeof(listNode));
+	node->key = key;//값 저장
+	node->rlink = h->first;
+	node->llink = h;//link 저장
+	h->first = node;
 	return 0;
 }
 
@@ -212,7 +238,7 @@ int insertFirst(headNode* h, int key) {
  * list의 첫번째 노드 삭제
  */
 int deleteFirst(headNode* h) {
-
+	
 	return 0;
 }
 
