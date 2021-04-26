@@ -316,7 +316,7 @@ int invertList(headNode* h) {
 		return 0;
 	}
 
-	//첫번째 노드
+	//첫번째 노드(rlink에 NULL을 넣어줘야 하므로 따로 뺌)
 	next_node = temp_node->rlink;//다음 노드 저장
 	temp_node->rlink = NULL;//첫번째 노드의 rlink는 끝이므로 NULL삽입
 	temp_node->llink = next_node;
@@ -325,14 +325,14 @@ int invertList(headNode* h) {
 	2. 내 llink에 다음 노드 주소 넣기(+다음 주소 기억 필요)
 	3. 내 rlink에 NULL넣기*/
 	while(temp_node != NULL){
-		next_node = temp_node->rlink;
-		temp_node->rlink = temp_node->llink;
-		temp_node->llink = next_node;
+		next_node = temp_node->rlink;//다음 노드를 저장하고
+		temp_node->rlink = temp_node->llink;//다음 노드 주소에 이전 노드 주소 저장
+		temp_node->llink = next_node;//이전 노드 주소에 다음 노드 주소 저장
 
 		last_node = temp_node;
 		temp_node = next_node;//다음 노드로 이동
 	}
-	
+
 	h->first = last_node;//헤드노드가 마지막 노드를 가르키도록
 	return 0;
 }

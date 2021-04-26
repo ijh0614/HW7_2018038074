@@ -10,7 +10,7 @@ Doubly Linked List
 - [O] int deleteLast(headNode* h);
 - [O] int insertNode(headNode* h, int key);
 - [O] int deleteNode(headNode* h, int key);
-- [] int invertList(headNode* h);
+- [O] int invertList(headNode* h);
 
 
 ### Recent work
