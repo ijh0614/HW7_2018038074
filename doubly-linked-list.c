@@ -161,20 +161,20 @@ void printList(headNode* h) {
 
 	printf("\n---PRINT\n");
 
-	if(h == NULL) {
+	if(h == NULL) {//프린트함수 전처리. 초기화가 안 되어있을 경우 출력한다
 		printf("Nothing to print....\n");
 		return;
 	}
 
 	p = h->first;
 
-	while(p != NULL) {
+	while(p != NULL) {//반복문을 돌면서 끝까지 출력한다.
 		printf("[ [%d]=%d ] ", i, p->key);
 		p = p->rlink;
 		i++;
 	}
 
-	printf("  items = %d\n", i);
+	printf("  items = %d\n", i);//몇개 들어있는지 출력한다.
 }
 
 
@@ -404,7 +404,7 @@ int deleteNode(headNode* h, int key) {
 			}
 			del_node = temp;//그 외에 노드 사이를 지울 때
 			temp->llink->rlink = temp->rlink;
-			temp->rlink->llink = temp->llink;
+			temp->rlink->llink = temp->llink;//링크를 건너뛰게 만든다
 			
 			free(del_node);
 			return 1;
