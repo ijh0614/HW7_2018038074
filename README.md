@@ -8,8 +8,8 @@ Doubly Linked List
 - [O] int insertLast(headNode* h, int key);
 - [O] int deleteFirst(headNode* h);
 - [O] int deleteLast(headNode* h);
-- [] int insertNode(headNode* h, int key);
-- [] int deleteNode(headNode* h, int key);
+- [O] int insertNode(headNode* h, int key);
+- [O] int deleteNode(headNode* h, int key);
 - [] int invertList(headNode* h);
 
 

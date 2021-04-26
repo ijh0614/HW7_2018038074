@@ -301,6 +301,39 @@ int deleteFirst(headNode* h) {
  */
 int invertList(headNode* h) {
 
+	listNode* temp_node = h->first;
+	listNode* next_node;
+	listNode* last_node;
+
+	
+	//전처리기
+	if(temp_node == NULL){//저장되어 있는 노드가 없거나
+		printf("\nPlease input two nodes.\n");
+		return 0;
+	}
+	else if(temp_node->rlink == NULL){//노드가 하나만 있는 경우
+		printf("\nAt least two nodes are required for the program to work.\n");
+		return 0;
+	}
+
+	//첫번째 노드
+	next_node = temp_node->rlink;//다음 노드 저장
+	temp_node->rlink = NULL;//첫번째 노드의 rlink는 끝이므로 NULL삽입
+	temp_node->llink = next_node;
+	temp_node = next_node;
+	/*1. 지금 노드 rlink에 이전 노드주소 넣기
+	2. 내 llink에 다음 노드 주소 넣기(+다음 주소 기억 필요)
+	3. 내 rlink에 NULL넣기*/
+	while(temp_node != NULL){
+		next_node = temp_node->rlink;
+		temp_node->rlink = temp_node->llink;
+		temp_node->llink = next_node;
+
+		last_node = temp_node;
+		temp_node = next_node;//다음 노드로 이동
+	}
+	
+	h->first = last_node;//헤드노드가 마지막 노드를 가르키도록
 	return 0;
 }
 
@@ -356,5 +389,29 @@ int deleteNode(headNode* h, int key) {
 		return 0;
 	}
 
+	listNode* temp = h->first;
+	listNode* del_node;
+	
+	while(temp != NULL){
+		if(key == temp->key){
+			if(temp == h->first){//첫번째 노드를 지워야 할 때
+				deleteFirst(h);
+				return 1;
+			}
+			if(temp->rlink == NULL){//마지막 노드를 지워야 할 때
+				deleteLast(h);
+				return 1;
+			}
+			del_node = temp;//그 외에 노드 사이를 지울 때
+			temp->llink->rlink = temp->rlink;
+			temp->rlink->llink = temp->llink;
+			
+			free(del_node);
+			return 1;
+		}
+		temp = temp->rlink;
+	}
+
+	printf("There is no node to delete.\n\n");
 	return 1;
 }
